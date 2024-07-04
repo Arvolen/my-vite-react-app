@@ -11,8 +11,6 @@ type ResponseData = {
     accessToken: string;
 }
 
-const VITE_API_BASE_URL = 'http://localhost:5001/api/user'
-
 const AdminLogin: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         email: '',
@@ -24,26 +22,24 @@ const AdminLogin: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
-            ...prevData,
-            [name]: value
+          ...prevData,
+          [name]: value
         }));
-    };
+      };
 
     const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
         try {
-            const response: AxiosResponse<ResponseData> = await axios.post(`${VITE_API_BASE_URL}/user/login`,
-                formData,
-                {
-                    withCredentials: true, // Allow cookies to be sent
-                }); // Send data to the server's register API
+            const response: AxiosResponse<ResponseData> = await axios.post(
+                'http://localhost:5001/api/users/login',
+                formData);
 
             const { accessToken } = response.data; // Access the accessToken from the response data
             sessionStorage.setItem('accessToken', accessToken);
             setAccessToken(accessToken);
-            const isAdmin = true;
+            console.log(accessToken)
             navigate('/adminHome');
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -59,17 +55,23 @@ const AdminLogin: React.FC = () => {
   return (
     <div className="container">
       <h1>Login</h1>
-      <input 
-        type="text" 
-        placeholder="Username" 
-        value={formData.email} 
-        onChange={handleChange} 
+      <input
+        type="text"
+        id="email"
+        name="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleChange}
+        required
       />
-      <input 
-        type="password" 
-        placeholder="Password" 
-        value={formData.password} 
-        onChange={handleChange} 
+      <input
+        type="text"
+        id="password"
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleChange}
+        required
       />
       <button onClick={handleLogin}>Login</button>
     </div>
