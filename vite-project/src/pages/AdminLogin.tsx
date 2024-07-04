@@ -40,7 +40,7 @@ const AdminLogin: React.FC = () => {
             sessionStorage.setItem('accessToken', accessToken);
             setAccessToken(accessToken);
             console.log(accessToken)
-            navigate('/adminHome');
+            navigate('/user/home');
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error('Error logging in user:',);

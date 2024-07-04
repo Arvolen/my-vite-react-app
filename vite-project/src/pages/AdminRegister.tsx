@@ -42,7 +42,7 @@ const AdminRegister: React.FC = () => {
       console.log('Response:', response);
       const { email } = response.data;
       alert(`Admin with email: ${email} registered successfully!`);
-      navigate('/admin-login');
+      navigate('/user/login');
     } catch (error) {
       console.error('Error during registration:', error);
       if (axios.isAxiosError(error)) {
