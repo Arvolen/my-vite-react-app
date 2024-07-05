@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import './Admin.css';
 
 type FormData = {
+  name: string;
   username: string;
   email: string;
   password: string;
@@ -16,6 +17,7 @@ type ResponseData = {
 
 const AdminRegister: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
+    name: '',
     username: '',
     email: '',
     password: ''
@@ -58,6 +60,15 @@ const AdminRegister: React.FC = () => {
   return (
     <div className="container">
       <h1>Register</h1>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Name"
+        value={formData.name}
+        onChange={handleChange}
+        required
+      />
       <input
         type="text"
         id="username"
