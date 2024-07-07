@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
+import {  Link } from 'react-router-dom';
 
 type Contact = {
   id: number;
@@ -18,29 +19,39 @@ const Contacts: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredContacts(
-      contacts.filter(contact =>
-        contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    if (Array.isArray(contacts)) {
+      setFilteredContacts(
+        contacts.filter(contact =>
+          contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
   }, [searchTerm, contacts]);
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('/api/contacts', {
+      const response = await axios.get('/contacts', {
         headers: {
           'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
         }
       });
-      setContacts(response.data);
+      console.log('API response:', response.data); // Log the response data
+
+      if (Array.isArray(response.data)) {
+        setContacts(response.data);
+      } else {
+        console.error('API response is not an array:', response.data);
+        setContacts([]);
+      }
     } catch (error) {
       console.error('Error fetching contacts:', error);
+      setContacts([]); // Ensure contacts is an array even on error
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`/api/contacts/${id}`, {
+      await axios.delete(`/contacts/${id}`, {
         headers: {
           'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
         }
@@ -55,6 +66,7 @@ const Contacts: React.FC = () => {
     setSearchTerm(e.target.value);
   };
 
+
   return (
     <div className="contacts-container">
       <h1>Contact List</h1>
@@ -65,10 +77,11 @@ const Contacts: React.FC = () => {
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <button onClick={fetchContacts}>Search</button>
       </div>
       <div className="button-group">
-        <button onClick={() => console.log('Navigate to add contact form')}>Add Contact</button>
+      <Link to="/user/Contact/add">
+          <button className="nav-button">Add a contact</button>
+        </Link>
       </div>
       <table>
         <thead>
@@ -80,19 +93,33 @@ const Contacts: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredContacts.map(contact => (
-            <tr key={contact.id}>
-              <td>{contact.name}</td>
-              <td>{contact.email}</td>
-              <td>{contact.phone}</td>
-              <td>
-                <button onClick={() => handleDelete(contact.id)}>Delete</button>
-                {/* Add edit button or other actions as needed */}
-              </td>
+          {filteredContacts.length > 0 ? (
+            filteredContacts.map(contact => (
+              <tr key={contact.id}>
+                <td>{contact.name}</td>
+                <td>{contact.email}</td>
+                <td>{contact.phone}</td>
+                <td>
+                  <button onClick={() => handleDelete(contact.id)}>Delete</button>
+                </td>
+                <td>
+                  <button onClick={() => handleDelete(contact.id)}>Delete</button>
+                </td>
+                
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4}>No contacts found</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
+      <div className="button-group">
+      <Link to="/user/home">
+          <button className="nav-button">Back</button>
+        </Link>
+      </div>
     </div>
   );
 };

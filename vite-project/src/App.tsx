@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound'; // Import the NotFound component
 import HomeScreen from './pages/homeScreen';
 import UserProfile from './pages/userProfile';
 import Contacts from './pages/contacts';
+import AddContacts from './pages/addContact';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/user/Contact" element={<Contacts />} />
         <Route path="/user/Games" element={<AdminLogin />} />
         <Route path="/user/profile" element={<UserProfile />} />
+        <Route path="/user/Contact/add" element={<AddContacts />} />
         {/* Add more routes here */}
         <Route path="*" element={<Navigate to="/welcome" />} /> {/* Fallback route */}
       </Routes>

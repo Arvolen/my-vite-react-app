@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import axios from '../api/axios';
+import { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 type ResponseData = {
@@ -46,8 +47,13 @@ const UserProfile: React.FC = () => {
     return <div>Loading...</div>; // Placeholder while loading user data
   }
 
+  const handleBackClick = () => {
+    navigate(-1); // Navigate back to the previous screen
+  };
+
   return (
     <div className="profile-container">
+      
       <h1>User Profile</h1>
       <div>
         <p>User ID: {userData.id}</p>
@@ -55,6 +61,7 @@ const UserProfile: React.FC = () => {
         <p>Email: {userData.email}</p>
         {/* Display additional user information as needed */}
       </div>
+      <button onClick={handleBackClick}>Back</button> {/* Back button */}
     </div>
   );
 };
