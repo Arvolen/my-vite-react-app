@@ -8,6 +8,7 @@ import HomeScreen from './pages/homeScreen';
 import UserProfile from './pages/userProfile';
 import Contacts from './pages/contacts';
 import AddContacts from './pages/addContact';
+import UpdateContact from './pages/updateContact';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="/user/Games" element={<AdminLogin />} />
         <Route path="/user/profile" element={<UserProfile />} />
         <Route path="/user/Contact/add" element={<AddContacts />} />
+        <Route path="/user/Contact/update" element={<UpdateContact />} />
         {/* Add more routes here */}
         <Route path="*" element={<Navigate to="/welcome" />} /> {/* Fallback route */}
       </Routes>
